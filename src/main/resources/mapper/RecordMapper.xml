@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.questionnaire.mapper.RecordMapper" >
+  <resultMap id="BaseResultMap" type="com.system.questionnaire.model.Record" >
+    <constructor >
+      <idArg column="RECORD_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECORD_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECORD_SURVEY_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RECORD_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    RECORD_ID, RECORD_USER_ID, RECORD_SURVEY_ID, RECORD_TIME
+  </sql>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from record
+    where RECORD_USER_ID = #{recordUserId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from record
+    where RECORD_ID = #{recordId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from record
+    where RECORD_ID = #{recordId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.system.questionnaire.model.Record" >
+    insert into record (RECORD_ID, RECORD_USER_ID, RECORD_SURVEY, 
+      RECORD_TIME)
+    values (#{recordId,jdbcType=VARCHAR}, #{recordUserId,jdbcType=VARCHAR}, #{recordSurveyId,jdbcType=VARCHAR},
+      #{recordTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.questionnaire.model.Record" >
+    insert into record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        RECORD_ID,
+      </if>
+      <if test="recordUserId != null" >
+        RECORD_USER_ID,
+      </if>
+      <if test="recordSurveyId != null" >
+        RECORD_SURVEY_Id,
+      </if>
+        RECORD_TIME,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordUserId != null" >
+        #{recordUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordSurveyId != null" >
+        #{recordSurveyId,jdbcType=VARCHAR},
+      </if>
+        now(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.questionnaire.model.Record" >
+    update record
+    <set >
+      <if test="recordUserId != null" >
+        RECORD_USER_ID = #{recordUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordSurveyId != null" >
+        RECORD_SURVEY_Id = #{recordSurveyId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null" >
+        RECORD_TIME = #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where RECORD_ID = #{recordId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.questionnaire.model.Record" >
+    update record
+    set RECORD_USER_ID = #{recordUserId,jdbcType=VARCHAR},
+      RECORD_SURVEY_Id = #{recordSurveyId,jdbcType=VARCHAR},
+      RECORD_TIME = #{recordTime,jdbcType=TIMESTAMP}
+    where RECORD_ID = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

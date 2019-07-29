@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.questionnaire.mapper.ProblemMapper">
+    <resultMap id="BaseResultMap" type="com.system.questionnaire.model.Problem">
+        <constructor>
+            <idArg column="PROBLEM_ID" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="PROBLEM_SURVEY_ID" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="PROBLEM_CONTENT" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="OPTIONS_ONE" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="OPTIONS_TWO" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="OPTIONS_THREE" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="OPTIONS_FOUR" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="OPTIONS_ONE_NUM" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="OPTIONS_TWO_NUM" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="OPTIONS_THREE_NUM" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="OPTIONS_FOUR_NUM" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    PROBLEM_ID, PROBLEM_SURVEY_ID, PROBLEM_CONTENT, OPTIONS_ONE, OPTIONS_TWO, OPTIONS_THREE, 
+    OPTIONS_FOUR, OPTIONS_ONE_NUM, OPTIONS_TWO_NUM, OPTIONS_THREE_NUM, OPTIONS_FOUR_NUM
+  </sql>
+
+    <!--根据问卷ID查问题-->
+    <select id="selectBySurveyId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from problem
+        where PROBLEM_SURVEY_ID = #{problemSurveyId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from problem
+        where PROBLEM_ID = #{problemId,jdbcType=VARCHAR}
+    </select>
+    <update id="updateOptionsNum" parameterType="com.system.questionnaire.model.Problem">
+        update problem
+        <set>
+            <if test="optionsOne != null">
+                OPTIONS_ONE_NUM = OPTIONS_ONE_NUM + 1,
+            </if>
+            <if test="optionsTwo != null">
+                OPTIONS_TWO_NUM = OPTIONS_TWO_NUM + 1,
+            </if>
+            <if test="optionsThree != null">
+                OPTIONS_THREE_NUM = OPTIONS_THREE_NUM + 1,
+            </if>
+            <if test="optionsFour != null">
+                OPTIONS_FOUR_NUM = OPTIONS_FOUR_NUM + 1,
+            </if>
+        </set>
+        where PROBLEM_ID = #{problemId,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from problem
+    where PROBLEM_ID = #{problemId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.system.questionnaire.model.Problem">
+    insert into problem (PROBLEM_ID, PROBLEM_SURVEY_ID, PROBLEM_CONTENT, 
+      OPTIONS_ONE, OPTIONS_TWO, OPTIONS_THREE, 
+      OPTIONS_FOUR, OPTIONS_ONE_NUM, OPTIONS_TWO_NUM, 
+      OPTIONS_THREE_NUM, OPTIONS_FOUR_NUM)
+    values (#{problemId,jdbcType=VARCHAR}, #{problemSurveyId,jdbcType=VARCHAR}, #{problemContent,jdbcType=VARCHAR}, 
+      #{optionsOne,jdbcType=VARCHAR}, #{optionsTwo,jdbcType=VARCHAR}, #{optionsThree,jdbcType=VARCHAR}, 
+      #{optionsFour,jdbcType=VARCHAR}, #{optionsOneNum,jdbcType=INTEGER}, #{optionsTwoNum,jdbcType=INTEGER},
+      #{optionsThreeNum,jdbcType=INTEGER}, #{optionsFourNum,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.system.questionnaire.model.Problem">
+        insert into problem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="problemId != null">
+                PROBLEM_ID,
+            </if>
+            <if test="problemSurveyId != null">
+                PROBLEM_SURVEY_ID,
+            </if>
+            <if test="problemContent != null">
+                PROBLEM_CONTENT,
+            </if>
+            <if test="optionsOne != null">
+                OPTIONS_ONE,
+            </if>
+            <if test="optionsTwo != null">
+                OPTIONS_TWO,
+            </if>
+            <if test="optionsThree != null">
+                OPTIONS_THREE,
+            </if>
+            <if test="optionsFour != null">
+                OPTIONS_FOUR,
+            </if>
+            <if test="optionsOneNum != null">
+                OPTIONS_ONE_NUM,
+            </if>
+            <if test="optionsTwoNum != null">
+                OPTIONS_TWO_NUM,
+            </if>
+            <if test="optionsThreeNum != null">
+                OPTIONS_THREE_NUM,
+            </if>
+            <if test="optionsFourNum != null">
+                OPTIONS_FOUR_NUM,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="problemId != null">
+                #{problemId,jdbcType=VARCHAR},
+            </if>
+            <if test="problemSurveyId != null">
+                #{problemSurveyId,jdbcType=VARCHAR},
+            </if>
+            <if test="problemContent != null">
+                #{problemContent,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsOne != null">
+                #{optionsOne,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsTwo != null">
+                #{optionsTwo,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsThree != null">
+                #{optionsThree,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsFour != null">
+                #{optionsFour,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsOneNum != null">
+                #{optionsOneNum,jdbcType=INTEGER},
+            </if>
+            <if test="optionsTwoNum != null">
+                #{optionsTwoNum,jdbcType=INTEGER},
+            </if>
+            <if test="optionsThreeNum != null">
+                #{optionsThreeNum,jdbcType=INTEGER},
+            </if>
+            <if test="optionsFourNum != null">
+                #{optionsFourNum,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.system.questionnaire.model.Problem">
+        update problem
+        <set>
+            <if test="problemSurveyId != null">
+                PROBLEM_SURVEY_ID = #{problemSurveyId,jdbcType=VARCHAR},
+            </if>
+            <if test="problemContent != null">
+                PROBLEM_CONTENT = #{problemContent,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsOne != null">
+                OPTIONS_ONE = #{optionsOne,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsTwo != null">
+                OPTIONS_TWO = #{optionsTwo,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsThree != null">
+                OPTIONS_THREE = #{optionsThree,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsFour != null">
+                OPTIONS_FOUR = #{optionsFour,jdbcType=VARCHAR},
+            </if>
+            <if test="optionsOneNum != null">
+                OPTIONS_ONE_NUM = #{optionsOneNum,jdbcType=INTEGER},
+            </if>
+            <if test="optionsTwoNum != null">
+                OPTIONS_TWO_NUM = #{optionsTwoNum,jdbcType=INTEGER},
+            </if>
+            <if test="optionsThreeNum != null">
+                OPTIONS_THREE_NUM = #{optionsThreeNum,jdbcType=INTEGER},
+            </if>
+            <if test="optionsFourNum != null">
+                OPTIONS_FOUR_NUM = #{optionsFourNum,jdbcType=INTEGER},
+            </if>
+        </set>
+        where PROBLEM_ID = #{problemId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.system.questionnaire.model.Problem">
+    update problem
+    set PROBLEM_SURVEY_ID = #{problemSurveyId,jdbcType=VARCHAR},
+      PROBLEM_CONTENT = #{problemContent,jdbcType=VARCHAR},
+      OPTIONS_ONE = #{optionsOne,jdbcType=VARCHAR},
+      OPTIONS_TWO = #{optionsTwo,jdbcType=VARCHAR},
+      OPTIONS_THREE = #{optionsThree,jdbcType=VARCHAR},
+      OPTIONS_FOUR = #{optionsFour,jdbcType=VARCHAR},
+      OPTIONS_ONE_NUM = #{optionsOneNum,jdbcType=INTEGER},
+      OPTIONS_TWO_NUM = #{optionsTwoNum,jdbcType=INTEGER},
+      OPTIONS_THREE_NUM = #{optionsThreeNum,jdbcType=INTEGER},
+      OPTIONS_FOUR_NUM = #{optionsFourNum,jdbcType=INTEGER}
+    where PROBLEM_ID = #{problemId,jdbcType=VARCHAR}
+  </update>
+</mapper>
